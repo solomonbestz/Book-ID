@@ -28,9 +28,9 @@ class SideFrame(ctk.CTkFrame):
             overwrite_preferred_drawing_method,
             **kwargs
         )
-        self.button = ctk.CTkButton(
-                self, text="Icon 1", width=6, height=4, corner_radius=100
-            )
-        self.button.grid(row=0, column=0, padx=10, pady=(10, 0))
+        # self.button = ctk.CTkButton(
+        #         self, text="Icon 1", width=6, height=4, corner_radius=100
+        #     )
+        # self.button.grid(row=0, column=0, padx=10, pady=(10, 0))
 
     def get(self):...

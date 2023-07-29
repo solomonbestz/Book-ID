@@ -12,7 +12,7 @@ class MainApp(ctk.CTk):
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure((1, 2), weight=3)
 
-        self.side_frame = SideFrame(self, fg_color="red")
+        self.side_frame = SideFrame(self, fg_color="red", width=50)
         self.side_frame.grid(row=0, rowspan=3, column=0, sticky="nsew")
         self.top_bar = TopFrame(
             self
