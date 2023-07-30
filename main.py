@@ -47,6 +47,33 @@ class MainFrame(ctk.CTkFrame):
 class SubMainFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
+        font_1 = ctk.CTkFont(family="Roboto", size=12, weight='bold')
+
+        self.sch_name = ctk.CTkLabel(self, text="School Name: ", text_color=BLACK_COLOR, font=font_1)
+        self.sch_entry = ctk.CTkEntry(
+            self, width=200, height=40, fg_color=GRAY_COLOR, corner_radius=2, border_width=0
+        )
+        self.book_name = ctk.CTkLabel(self, text="Book Name: ", text_color=BLACK_COLOR, font=font_1)
+        self.book_entry = ctk.CTkEntry(
+            self, width=200, height=40, fg_color=GRAY_COLOR, corner_radius=2, border_width=0
+        )
+        self.year = ctk.CTkLabel(self, text="Year: ", text_color=BLACK_COLOR, font=font_1)
+        self.year_entry = ctk.CTkEntry(
+            self, width=200, height=40, fg_color=GRAY_COLOR, corner_radius=2, border_width=0
+        )
+        self.month = ctk.CTkLabel(self, text="Month: ", text_color=BLACK_COLOR, font=font_1)
+        self.month_entry = ctk.CTkEntry(
+            self, width=200, height=40, fg_color=GRAY_COLOR, corner_radius=2, border_width=0
+        )
+
+        self.sch_name.grid(row=0, column=0, pady=(10, 0))
+        self.sch_entry.grid(row=0, column=1, pady=(10, 0))
+        self.book_name.grid(row=0, column=2, pady=(10, 0), padx=(5, 0))
+        self.book_entry.grid(row=0, column=3, pady=(10, 0))
+        self.year.grid(row=1, column=0, pady=(10, 0))
+        self.year_entry.grid(row=1, column=1, pady=(10, 0))
+        self.month.grid(row=1, column=2, pady=(10, 0), padx=(5, 0))
+        self.month_entry.grid(row=1, column=3, pady=(10, 0))
 
 
 class SideFrame(ctk.CTkFrame):
@@ -80,30 +107,43 @@ class SideFrame(ctk.CTkFrame):
 
         self.home_image = load_image("/images/home.png", (40, 40))
         self.table_image = load_image("/images/table.png", (40, 40))
+        self.switch_image = load_image("/images/switch.png", (40, 40))
 
         self.home_btn = ctk.CTkButton(
             self,
             width=50,
             text="",
             fg_color=SIDE_BG_COLOR,
-            hover_color=MAIN_BG_COLOR,
+            hover_color=SUB_MAIN_BG,
             corner_radius=0,
             image=self.home_image,
-            command=""
+            command="",
         )
-        self.home_btn.grid(row=0, column=0, pady=(50, 0),ipadx=10)
+        self.home_btn.grid(row=0, column=0, pady=(50, 0), ipadx=10)
 
         self.table_btn = ctk.CTkButton(
             self,
             width=50,
             text="",
             fg_color=SIDE_BG_COLOR,
-            hover_color=MAIN_BG_COLOR,
+            hover_color=SUB_MAIN_BG,
             corner_radius=0,
             image=self.table_image,
-            command=""
+            command="",
         )
         self.table_btn.grid(row=1, column=0, pady=(15, 0), ipadx=10)
+
+        self.switch_btn = ctk.CTkButton(
+            self,
+            width=50,
+            text="",
+            fg_color=SIDE_BG_COLOR,
+            hover_color=SUB_MAIN_BG,
+            corner_radius=0,
+            image=self.switch_image,
+            command=exit,
+        )
+        self.switch_btn.grid(row=2, column=0, pady=(350, 0), ipadx=10)
 
 
 class App(ctk.CTk):
@@ -114,6 +154,7 @@ class App(ctk.CTk):
         super().__init__()
 
         self.title("Book ID")
+        self.iconbitmap('images/logo.ico')
         self.minsize(700, 600)
         self.maxsize(900, 800)
 
