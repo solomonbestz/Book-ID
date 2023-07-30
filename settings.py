@@ -1,4 +1,11 @@
-from global_var import *
-from main_frame import MainFrame
-from side_frame import SideFrame
-from top_frame import TopFrame
+from typing import Optional, Tuple, Union
+import customtkinter as ctk
+from PIL import Image
+import os
+
+
+MAIN_BG_COLOR = '#3E3636'
+SIDE_BG_COLOR = '#D72323'
+SUB_MAIN_BG = '#F5EDED'
+
+
