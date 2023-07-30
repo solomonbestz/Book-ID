@@ -13,5 +13,5 @@ SUB_MAIN_BG = '#F5EDED'
 #General color
 BLACK_COLOR = '#000000'
 GRAY_COLOR = 'gray'
-
+TRANSPARENT_WHITE = '#FFFFFF'
 
