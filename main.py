@@ -32,11 +32,11 @@ class SideFrame(ctk.CTkFrame):
             overwrite_preferred_drawing_method,
             **kwargs
         )
-
+        self.submain = SubMainFrame(self)
         self.home_image = load_image("/images/home.png", (40, 40))
         self.table_image = load_image("/images/table.png", (40, 40))
         self.switch_image = load_image("/images/switch.png", (40, 40))
-
+        
         self.home_btn = ctk.CTkButton(
             self,
             width=50,
@@ -45,7 +45,7 @@ class SideFrame(ctk.CTkFrame):
             hover_color=SUB_MAIN_BG,
             corner_radius=0,
             image=self.home_image,
-            command="",
+            command=lambda: self.submain.switch_frame('home')
         )
         self.home_btn.grid(row=0, column=0, pady=(50, 0), ipadx=10)
 
@@ -57,7 +57,7 @@ class SideFrame(ctk.CTkFrame):
             hover_color=SUB_MAIN_BG,
             corner_radius=0,
             image=self.table_image,
-            command="",
+            command=lambda: self.submain.switch_frame('table'),
         )
         self.table_btn.grid(row=1, column=0, pady=(15, 0), ipadx=10)
 
@@ -72,7 +72,7 @@ class SideFrame(ctk.CTkFrame):
             command=exit,
         )
         self.switch_btn.grid(row=2, column=0, pady=(350, 0), ipadx=10)
-
+    
 class MainFrame(ctk.CTkFrame):
     def __init__(
         self,
@@ -102,28 +102,44 @@ class MainFrame(ctk.CTkFrame):
             **kwargs
         )
 
-        # >>>>>>>>>>>>>>>>>CREATING THE SUB FRAMES
+        # >>>>>>>>>>>>>>>>>CREATING THE SUB FRAME
         self.sub_main = SubMainFrame(
             self, width=600, height=400, fg_color=SUB_MAIN_BG, corner_radius=4
         )
         self.sub_main.grid(padx=(10, 10), pady=(50, 50), sticky="nsew")
+        
 
         # >>>>>>>>>>>>>>>>>CONFIGURING THE FRAMES
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
-
+    
+    def __str__(self) -> str:
+        return self
 
 class SubMainFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
-        
-        self.form_frame = FormFrame(self, fg_color=SUB_MAIN_BG)
-        self.form_frame.grid()
 
+        self.form_frame = FormFrame(self, fg_color=SUB_MAIN_BG)
+
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(0, weight=1)
+
+    def switch_frame(self, event):
+        if event == 'home':
+            self.form_frame.grid()
+        elif event == 'table':
+            self.form_frame.destroy()
+        
+    def __str__(self) -> str:
+        return self
+
+   
 
 class FormFrame(ctk.CTkFrame):
     def __init__(self, master, **kwargs):
         super().__init__(master, **kwargs)
+        self
         font_1 = ctk.CTkFont(family="Roboto", size=12, weight="bold")
         btn_font = ctk.CTkFont(family='Times', size=14, weight='bold')
 
@@ -220,8 +236,6 @@ class FormFrame(ctk.CTkFrame):
         self.volume_entry.grid(row=2, column=3, pady=(10, 0))
         self.button.grid(row=3, column=1, columnspan=3, pady=(10, 0), sticky="ew")
 
-
-
 class App(ctk.CTk):
     ctk.set_appearance_mode("dark")
     ctk.set_default_color_theme("dark-blue")
@@ -229,25 +243,33 @@ class App(ctk.CTk):
     def __init__(self):
         super().__init__()
 
-        self.title("Book ID")
-        self.iconbitmap("images/logo.ico")
-        self.minsize(700, 600)
-        self.maxsize(900, 800)
+        self.app = self
+        self.app.title("Book ID")
+        self.app.iconbitmap("images/logo.ico")
+        self.app.minsize(700, 600)
+        self.app.maxsize(900, 800)
+        
 
         # >>>>>>>>>>>>>>>>>CREATING THE MAIN FRAMES
         self.side_frame = SideFrame(
-            self, width=80, height=600, fg_color=SIDE_BG_COLOR, corner_radius=0
+            self.app, width=80, height=600, fg_color=SIDE_BG_COLOR, corner_radius=0
         )
         self.side_frame.grid(row=0, column=0, rowspan=3, sticky="ns")
 
         self.main_frame = MainFrame(
-            self, width=620, height=600, fg_color=MAIN_BG_COLOR, corner_radius=0
+            self.app, width=620, height=600, fg_color=MAIN_BG_COLOR, corner_radius=0
         )
         self.main_frame.grid(row=0, column=1, padx=(1, 0), columnspan=3, sticky="nsew")
 
+
+
         # >>>>>>>>>>>>>>>>>CONFIGURING THE FRAMES
-        self.columnconfigure(1, weight=1)
-        self.rowconfigure(0, weight=1)
+        self.app.columnconfigure(1, weight=1)
+        self.app.rowconfigure(0, weight=1)
+
+    def check(self):
+        if self.side_frame.get() == 'home':
+            self.main_frame.sub_main.form_frame.grid()
 
 
 def load_image(image_path: str, size: Tuple[int | int]):

@@ -1,53 +1,58 @@
-import customtkinter as ctk
+import tkinter as tk
 
+class App(tk.Tk):
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
+        container = tk.Frame(self)
+        container.pack(side="top", fill="both", expand=True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
 
+        self.frames = {}
+        for F in (Wtf, Test):
+            page_name = F.__name__
+            frame = F(parent=container, controller=self)
+            self.frames[page_name] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
 
+        self.show_frame("Wtf")
 
+    def show_frame(self, page_name):
+        """ Show a frame for the given page name. """
+        frame = self.frames[page_name]
+        frame.tkraise()
 
+class Wtf(tk.Frame):
 
-if __name__=='__main__':
-    root = ctk.CTk()
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        self.parent =  parent
+        self.controller = controller
+        self.create_widgets()
 
+    def create_widgets(self):
+        self.test = Test(self.parent, self.controller)
+        self.btn = tk.Button(self, text="Call",
+                             command=lambda: self.controller.show_frame("Test"))
+        self.btn.pack()
 
-# CREATING FRAMES >>>>>>>>>>>>>>>>>>>>>>
+class Test(tk.Frame):
 
-    frame = ctk.CTkFrame(root, width=20, corner_radius=0, fg_color='#4D96FF', border_width=1, border_color='red')
-    frame.grid(row = 0, rowspan=2, column = 0, sticky='nswe')
-    frame = ctk.CTkFrame(root, width=200, height=200,corner_radius=0, fg_color='#3A3845', border_width=1, border_color='white')
-    frame.grid(row = 0, column = 1, sticky='nswe')
-    frame = ctk.CTkFrame(root, width=200, height=200,corner_radius=0, fg_color='#3A3845', border_width=1, border_color='white')
-    frame.grid(row = 0, column = 2, sticky='nswe')
-    # frame = ctk.CTkFrame(root, width=200, height=200,corner_radius=0, fg_color='#3A3845', border_width=1, border_color='white')
-    # frame.grid(row = 1, column = 0, sticky='nswe')
-    frame = ctk.CTkFrame(root, width=200, height=200,corner_radius=0, fg_color='#3A3845', border_width=1, border_color='white')
-    frame.grid(row = 1, column = 1, sticky='nswe')
-    frame = ctk.CTkFrame(root, width=200, height=200,corner_radius=0, fg_color='#3A3845', border_width=1, border_color='white')
-    frame.grid(row = 1, column = 2, sticky='nswe')
-   
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        self.parent =  parent
+        self.controller = controller
+        self.create_widgets()
 
-    # frame2 = ctk.CTkFrame(root, width=200, height=200,corner_radius=0, fg_color='#F7CCAC')
-    # frame2.grid(row = 1, column = 0, sticky='nswe')
+    def create_widgets(self):
+        self.label = tk.Label(self, text="Hello World!")
+        self.label.pack()
+        self.quit = tk.Button(self, text= "Quit", command=self.controller.destroy)
+        self.quit.pack()
 
-    # frame3 = ctk.CTkFrame(root, width=250, height=250,corner_radius=0, fg_color='#FFD93D')
-    # frame3.grid(row = 0, column = 1, sticky='nswe')
+if __name__ == "__main__":
 
-    # frame4 = ctk.CTkFrame(root, width=150, height=100,corner_radius=0, fg_color='#6BC877')
-    # frame4.grid(row = 1, column = 1, sticky='nsew')
-
-    # horizontal = ctk.CTkFrame(root, width=500, height=100,corner_radius=0, fg_color='#4D96FF')
-    # horizontal.grid(row = 2, column=0, columnspan=2, sticky='nswe')
-
-    # vertical = ctk.CTkFrame(root, width=100, height=350,corner_radius=0, fg_color='#FF6B6B')
-    # vertical.grid(row = 0, column=2, rowspan=3, sticky='nswe')
-
-# CONFIGURING THE FRAMES >>>>>>>>>>>>>>>>>>>>>>>>
-
-    root.columnconfigure(0, weight=1)
-    root.columnconfigure((1, 2), weight=2)
-    root.rowconfigure((0, 1), weight=1)
-
-   
-
-    root.mainloop()
+    app = App()
+    app.mainloop()
